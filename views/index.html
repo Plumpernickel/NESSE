@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+
+    <title>Server-Sent Events Using Node</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom styles for this template -->
+    <link href="/css/carousel.css" rel="stylesheet">
+  </head>
+<!-- NAVBAR
+================================================== -->
+  <body>
+    <div class="navbar-wrapper">
+      <div class="container">
+
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">Node, Express, and SSE</a>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li class="dropdown-header">Nav header</li>
+                    <li><a href="#">Separated link</a></li>
+                    <li><a href="#">One more separated link</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- Carousel
+    ================================================== -->
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+      </ol>
+      <div class="carousel-inner">
+        <div class="item active">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>YGdot on Bootstrap here!</h1>
+              <p> Running a node express app on the <code>localhost:8888</code> URL</p>
+              <p><a class="btn btn-lg btn-primary" href="#fr1" role="button" id="Etype1">On with the show!</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>It's like being the web-dev version of a liaison...</h1>
+              <p>Bridging the dissonance and unfurling the convolution in communication between the server and the client with nary a change in hardware. The Javascript way.</p>
+              <p><a class="btn btn-lg btn-primary" href="#fr2" role="button">Uno Más</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>Wow. Much future. So edge. Awesome API.</h1>
+              <p></p>
+              <p><a class="btn btn-lg btn-primary" href="#fr3" role="button">Fin</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+      <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+    </div><!-- /.carousel -->
+
+
+
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+    <div class="container marketing">
+
+      <!-- Three columns of text below the carousel -->
+      <div class="row">
+        <div class="col-lg-4">
+          <img class="img-circle" src="/images/Activity3.png" alt="Generic placeholder image">
+          <h2>Alpha Phase</h2>
+          <p>Implementing an existing example that outputs a timestamp string and a message count polled from the server when the event listener detects a change in a watched or tracked directory path using node's filesystem modules. This is the proof of concept stage.</p>
+          <p><a class="btn btn-default" href="#fr1" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <img class="img-circle" src="/images/chandelieredit.png" alt="Generic placeholder image">
+          <h2>Beta Phase</h2>
+          <p>Reappropriating the base logic into the upcoming MakeDrive tool codebase in order to seamlessly listen in on file changes and save requests on the client end and notify the server to invoke and execute the necessary functionality thereafter.</p>
+          <p><a class="btn btn-default" href="#fr2" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <img class="img-circle" src="/images/archivumedit.png" alt="Generic placeholder image">
+          <h2>Afterthought</h2>
+          <p>Resources used throughout the project for reference and research purposes.<br><br><br><br></p>
+          <p><a class="btn btn-default" href="#fr3" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+      </div><!-- /.row -->
+
+
+      <!-- START THE FEATURETTES -->
+
+      <hr class="featurette-divider" id="fr1">
+
+      <div class="row featurette">
+        <div class="col-md-7">
+          <h2 class="featurette-heading">First event results: <span class="text-muted">Spare pants not included...</span></h2>
+          <p class="lead" id="event1"><script>
+            var source = new EventSource('/update-stream');
+
+            source.addEventListener('message', function(e) {
+            console.log(e);
+              $('#event1').append('<ul class = "linksul"><li>' + e.data + ' (message id: ' + e.lastEventId + ')</li>');
+            }, false);
+
+            source.addEventListener('error', function(e) {
+            console.log(e);
+              $('#event1').append('<ul class = "linksul" id="error-ul"><li>' + "a server connection timeout/error has occured, attempting to re-establish..." + '</li>');
+            }, false);
+            source.addEventListener('open', function(e) {
+            console.log(e);
+              $('#event1').append('<ul class = "linksul"><li>' + "Server Connection Open!" + '</li>');
+            }, false);
+          </script></p>
+        </div>
+        <div class="col-md-5">
+          <img class="featurette-image img-responsive" src="/images/SSE P1 Logic Flow.png" alt="Generic placeholder image">
+        </div>
+      </div>
+
+      <hr class="featurette-divider" id="fr2">
+
+      <div class="row featurette">
+        <div class="col-md-5">
+          <img class="featurette-image img-responsive" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+        </div>
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Encore? <span class="text-muted">Let's bring this concept to reality:</span></h2>
+          <p class="lead">Coming soon! :)</p>
+        </div>
+      </div>
+
+      <hr class="featurette-divider" id="fr3">
+
+      <div class="row featurette">
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Further reading<br> <span class="text-muted">(for all you go-getters):</span></h2>
+          <p class="lead">
+            <ul class = "linksul">
+              <li><a href="https://developer.mozilla.org/en-US/docs/Server-sent_events/Using_server-sent_events">Using Server-Sent Events</a></li>
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/EventSource">EventSource MDN documentation</a></li>
+              <li><a href="http://dev.w3.org/html5/eventsource/">Server-Sent Events Article on W3C</a></li>
+              <li><a href="http://www.html5rocks.com/en/tutorials/eventsource/basics/">HTML5 Rocks Article</a></li>
+              <li><a href="https://github.com/tomkersten/sses-node-example">tomkersten's SSES Example Github Repository</a></li>
+            </ul>
+          </p>
+        </div>
+        <div class="col-md-5">
+          <img class="featurette-image img-responsive" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <!-- /END THE FEATURETTES -->
+
+
+      <!-- FOOTER -->
+      <footer>
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>&copy; 2014 Mozilla Webmaker Team @ CDOT &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+      </footer>
+
+    </div><!-- /.container -->
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/docs.min.js"></script>
+    <a href="https://github.com/yoavgurevich"><img style="position: fixed; top: 0; right: 0; border: 0; z-index: 20;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+  </body>
+</html>
