@@ -148,23 +148,7 @@
       <div class="row featurette">
         <div class="col-md-7">
           <h2 class="featurette-heading">First event results: <span class="text-muted">Spare pants not included...</span></h2>
-          <p class="lead" id="event1"><script>
-            var source = new EventSource('/update-stream');
-
-            source.addEventListener('message', function(e) {
-            console.log(e);
-              $('#event1').append('<ul class = "linksul"><li>' + e.data + ' (message id: ' + e.lastEventId + ')</li>');
-            }, false);
-
-            source.addEventListener('error', function(e) {
-            console.log(e);
-              $('#event1').append('<ul class = "linksul" id="error-ul"><li>' + "a server connection timeout/error has occured, attempting to re-establish..." + '</li>');
-            }, false);
-            source.addEventListener('open', function(e) {
-            console.log(e);
-              $('#event1').append('<ul class = "linksul"><li>' + "Server Connection Open!" + '</li>');
-            }, false);
-          </script></p>
+          <p class="lead" id="event1"></p>
         </div>
         <div class="col-md-5">
           <img class="featurette-image img-responsive" src="/images/SSE P1 Logic Flow.png" alt="Generic placeholder image">
@@ -221,6 +205,45 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/docs.min.js"></script>
+    <script>
+            var source;
+            var servopen = false;
+            var servto = false;
+
+            var sourceinit = function(){
+              source = new EventSource('/update-stream');
+
+              source.addEventListener('open', function(e) {
+                console.log(e);
+                if(!servopen){
+                $('#event1').append('<ul class = "linksul" id="opencon-li"><li>' + "Server Connection Open!" + '</li>');
+                  servopen = true;
+                  servto = false;
+                }
+              }, false);
+
+              source.addEventListener('message', function(e) {
+              console.log(e);
+                $('#event1').append('<ul class = "linksul"><li>' + e.data + ' (message id: ' + e.lastEventId + ')</li>');
+              }, false);
+
+              source.addEventListener('error', function onError(e) {
+                source.removeEventListener('error', onError);
+                e.stopPropagation();
+                e.preventDefault();
+                console.log(e);
+                if(!servto){
+                  $('#event1').append('<ul class = "linksul" id="error-li"><li>' + "a server connection timeout/error has occured, attempting to re-establish..." + '</li>');
+                  servto = true;
+                  servopen = false;
+                }
+                source.close();
+                setTimeout(sourceinit, 8000);
+              }, false);
+            };
+
+            sourceinit();
+    </script>
     <a href="https://github.com/yoavgurevich/NESSE"><img style="position: fixed; top: 0; right: 0; border: 0; z-index: 20;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
   </body>
 </html>
