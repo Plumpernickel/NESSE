@@ -4,11 +4,11 @@
 
 var express = require('express'),
     routes  = require('./routes'),
-    redis   = require('redis'),
     fs      = require('fs'),
-    publisherClient = redis.createClient();
+    radio   = require('radio');
 
 var app = module.exports = express();
+
 
 // Configuration
 
@@ -38,12 +38,24 @@ app.get('/update-stream', function(req, res) {
   // let request last as long as possible
   req.socket.setTimeout(Infinity);
 
-  var messageCount = 0;
-  var watcher = fs.watch('/Users/twileighducaucus/Documents/testdoc/', function(event, filename) {
-    messageCount++; // Increment our message count
+//  var messageCount = 0;
+//  var watcher = fs.watch('/Users/twileighducaucus/Documents/testdoc/', function(event, filename) {
+//    messageCount++; // Increment our message count
+//    res.write('id: ' + messageCount + '\n');
+//    res.write("data: " + filename + ' ' + (new Date).toString() + '\n\n');
+//  });
 
-    res.write('id: ' + messageCount + '\n');
-    res.write("data: " + filename + ' ' + (new Date).toString() + '\n\n');
+  radio('updateToLatestSync').subscribe(function(){
+    console.log('first eventstream is firing');
+    res.write("data: " + 'Sync from source to update current session.' + '\n\n');
+  });
+  radio('poo').subscribe(function(){
+    console.log('poo eventstream is firing');
+    res.write("data: " + 'rocks!' + '\n\n');
+  });
+  radio('foo').subscribe(function(){
+    console.log('foo eventstream is firing');
+    res.write("data: " + 'socks!' + '\n\n');
   });
 
   //send headers for event-stream connection
@@ -53,22 +65,24 @@ app.get('/update-stream', function(req, res) {
     'Connection': 'keep-alive'
   });
   res.write('\n');
-
-  // The 'close' event is fired when a user closes their browser window.
-  // In that situation we want to make sure our redis channel subscription
-  // is properly shut down to prevent memory leaks...and incorrect subscriber
-  // counts to the channel.
-  req.on("close", function() {
-    watcher.close();
-    watcher = null;
-  });
+//  req.on("close", function() {
+//    watcher.close();
+//    watcher = null;
+//  });
 });
 
-app.get('/fire-event/:event_name', function(req, res) {
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.write('All clients have received "' + req.params.event_name + '"');
+app.get('/syncSuccess', function(req, res){
+  radio('updateToLatestSync').broadcast();
   res.end();
-});
+})
+app.get('/eStream2', function(req, res){
+  radio('poo').broadcast();
+  res.end();
+})
+app.get('/eStream3', function(req, res){
+  radio('foo').broadcast();
+  res.end();
+})
 
 app.listen(8888);
 console.log("Express server listening on port %d in %s mode", 8888, app.settings.env);
