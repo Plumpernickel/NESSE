@@ -83,7 +83,7 @@
             <div class="carousel-caption">
               <h1>YGdot on Bootstrap here!</h1>
               <p> Running a node express app on the <code>localhost:8888</code> URL</p>
-              <p><a class="btn btn-lg btn-primary" href="/syncSuccess" role="button" id="Etype1">On with the show!</a></p>
+              <p><a class="btn btn-lg btn-primary" href="#" role="button" id="Etype1">On with the show!</a></p>
             </div>
           </div>
         </div>
@@ -209,6 +209,8 @@
             var source;
             var servopen = false;
             var servto = false;
+            var connectionId;
+            var syncButton = $("#Etype1");
 
             var sourceinit = function(){
               source = new EventSource('/update-stream');
@@ -223,9 +225,22 @@
               }, false);
 
               source.addEventListener('message', function(e) {
-              console.log(e);
-                $('#event1').append('<ul class = "linksul"><li>' + e.data + ' (message id: ' + e.lastEventId + ')</li>');
-              }, false);
+                console.log("Initial connection made", e);
+
+                var data = JSON.parse(e.data);
+
+                // If this is the first message, capture the connectionId
+                connectionId = data.connectionId;
+
+                // Remove this event listener now that we have connectionId
+                source.removeEventListener('message', this);
+
+                source.addEventListener('message', function(e) {
+                  console.log(e);
+                  $('#event1').append('<ul class = "linksul"><li>' + e.data + '</li>');
+                }, false);
+
+              });
 
               source.addEventListener('error', function onError(e) {
                 source.removeEventListener('error', onError);
@@ -240,7 +255,16 @@
                 source.close();
                 setTimeout(sourceinit, 8000);
               }, false);
+
             };
+            syncButton.click(function(e) {
+              $.ajax('/syncSuccess', {
+                type: "GET",
+                data: {
+                  connectionId: connectionId
+                }
+              });
+            });
 
             sourceinit();
     </script>
