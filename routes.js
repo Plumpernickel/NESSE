@@ -69,8 +69,6 @@ module.exports = function( app ) {
 
     radio( 'updateToLatestSync' ).broadcast( req.session.username, connectionId );
 
-    // TODO - Pass broadcast logic as a 'syncFinished' handler to sync logic
-
     res.end();
   })
 }
