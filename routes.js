@@ -1,5 +1,5 @@
 // Global requires
-var radio = require( 'radio' );
+var EventEmitter = require('events').EventEmitter;
 
 // Stub session generation/authentication logic
 function sessionGen( req, res, next ) {
@@ -7,6 +7,8 @@ function sessionGen( req, res, next ) {
   req.session.username = "classic_steve";
   next();
 }
+
+var mittens = new EventEmitter();
 
 var eventSourceHelper = {
   sendOutOfDateMsg: function( connectionId, res ){
@@ -41,7 +43,7 @@ module.exports = function( app ) {
     }
     connectedClients[username][connectionId] = {};
 
-    radio('updateToLatestSync').subscribe( eventSourceHelper.sendOutOfDateMsg( connectionId, res ) );
+    mittens.on('updateToLatestSync', eventSourceHelper.sendOutOfDateMsg( connectionId, res ) );
 
     //send headers for event-stream connection
     res.writeHead(200, {
@@ -67,7 +69,7 @@ module.exports = function( app ) {
     var username = req.session.username,
         connectionId = req.query.connectionId;
 
-    radio( 'updateToLatestSync' ).broadcast( req.session.username, connectionId );
+    mittens.emit('updateToLatestSync', req.session.username, connectionId);
 
     res.end();
   })
