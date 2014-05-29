@@ -43,7 +43,7 @@ module.exports = function( app ) {
     }
     connectedClients[username][connectionId] = {};
 
-    mittens.on('updateToLatestSync', eventSourceHelper.sendOutOfDateMsg( connectionId, res ) );
+    mittens.on( 'updateToLatestSync', eventSourceHelper.sendOutOfDateMsg( connectionId, res ) );
 
     //send headers for event-stream connection
     res.writeHead(200, {
@@ -69,7 +69,7 @@ module.exports = function( app ) {
     var username = req.session.username,
         connectionId = req.query.connectionId;
 
-    mittens.emit('updateToLatestSync', req.session.username, connectionId);
+    mittens.emit( 'updateToLatestSync', req.session.username, connectionId );
 
     res.end();
   })
