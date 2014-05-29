@@ -8,7 +8,7 @@ function sessionGen( req, res, next ) {
   next();
 }
 
-var mittens = new EventEmitter();
+var emitter = new EventEmitter();
 
 var eventSourceHelper = {
   sendOutOfDateMsg: function( connectionId, res ){
@@ -43,7 +43,8 @@ module.exports = function( app ) {
     }
     connectedClients[username][connectionId] = {};
 
-    mittens.on( 'updateToLatestSync', eventSourceHelper.sendOutOfDateMsg( connectionId, res ) );
+    var onSyncCB = eventSourceHelper.sendOutOfDateMsg( connectionId, res );
+    emitter.on( 'updateToLatestSync', onSyncCB );
 
     //send headers for event-stream connection
     res.writeHead(200, {
@@ -61,6 +62,7 @@ module.exports = function( app ) {
     // Stream has closed
     req.on("close", function() {
       delete connectedClients[username][connectionId];
+      emitter.removeListener( 'updateToLatestSync', onSyncCB );
     });
   });
 
@@ -69,7 +71,7 @@ module.exports = function( app ) {
     var username = req.session.username,
         connectionId = req.query.connectionId;
 
-    mittens.emit( 'updateToLatestSync', req.session.username, connectionId );
+    emitter.emit( 'updateToLatestSync', req.session.username, connectionId );
 
     res.end();
   })
